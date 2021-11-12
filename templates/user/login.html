@@ -1,0 +1,27 @@
+{%extends 'partials/base.html'%}
+{% load crispy_forms_tags %}
+{%block title%}Log in{%endblock%}
+{%block content%}
+<div class="container mt-5">
+    <div class="row">
+        
+        <div class="col-sm-6 offset-3 bg-light p-4">
+            {%for message in messages%}
+            {%if message%}
+            <div class="alert alert-{{message.tags}}">
+                {{message}}
+            </div>
+            {%endif%}
+            {%endfor%}
+            <h3>User Registration</h3>
+            <form action="" method="post">
+                {%csrf_token%}
+                {{form|crispy}}
+                <a href="{%url 'password_reset_view'%}" class="me-4 mt-4 link-primary float-start">Forget Password</a>
+                <input class="btn btn-success mt-4 float-end " type="submit" value="Login">
+                
+            </form>
+        </div>
+    </div>
+</div>
+{%endblock%}

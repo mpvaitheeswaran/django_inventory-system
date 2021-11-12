@@ -1,0 +1,45 @@
+{%extends 'partials/base.html'%}
+{%block title%}Staff{%endblock%}
+{%block content%}
+{%include 'partials/topnavbar.html'%}
+ <!--Table-->
+ <div class="container">
+    <div class="row my-4">
+        <div class="col-md-4">
+
+        </div>
+        <div class="col-md-8">
+            <table class="table table-hover table-borderless bg-white">
+                <thead class="bg-success">
+                    <tr class="text-white">
+                        <th scope="col">Product</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Order by</th>
+                        <th scope="col">Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {%for order in orders%}
+                    <tr>
+                        <td>{{order.product}}</td>
+                        <td>{{order.product.category}}</td>
+                        <td>{{order.order_quantity}}</td>
+                        <td>
+                            {{order.staff}}
+                        </td>
+                        <td>{{order.date}}</td>
+                    </tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+</div>
+
+
+
+<!--End Table-->
+{%endblock%}
