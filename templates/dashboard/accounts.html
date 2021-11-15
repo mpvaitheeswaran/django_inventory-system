@@ -1,31 +1,13 @@
 {%extends 'partials/base.html'%}
+{% load crispy_forms_tags %}
 {%block title%}Accounts{%endblock%}
 {%block content%}
 {%include 'partials/topnavbar_work.html'%}
  <!--Table-->
  <div class="container">
     <div class="row my-4">
-        <div class="col-md-4">
-          <div class="card">
-            <div class="card-header bg-success text-light">
-              Accounts Form
-            </div>
-            <div class="card-body">
-              <form action="">
-                <div class="mb-3">
-                  <label for="exampleFormControlInput1" class="form-label">Email address</label>
-                  <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
-                </div>
-                <div class="mb-3">
-                  <label for="exampleFormControlTextarea1" class="form-label">Example textarea</label>
-                  <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                </div>
-                <input class="btn btn-success" type="submit" value="Add">
-              </form>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-8">
+        
+        <div class="col-md-12">
             <div class="card">
                 <div class="card-header bg-success text-light">
                   Accounts Section
@@ -35,31 +17,71 @@
                   <table class="table">
                     <thead>
                       <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">First</th>
-                        <th scope="col">Last</th>
-                        <th scope="col">Handle</th>
+                        <th scope="col">Total Purchased Product</th>
+                        <th scope="col">Total sold </th>
+                        <th scope="col">Total purchaced price</th>
+                        <th scope="col">Total sold price</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                      </tr>
-                      <tr>
-                        <th scope="row">2</th>
-                        <td>Jacob</td>
-                        <td>Thornton</td>
-                        <td>@fat</td>
-                      </tr>
-                      <tr>
-                        <th scope="row">3</th>
-                        <td colspan="2">Larry the Bird</td>
-                        <td>@twitter</td>
+                        <td>{{purchase_list.count}}</td>
+                        <td>{{sales_list.count}}</td>
+                        <td>{{total_purchased_price}}</td>
+                        <td>{{total_sold_price}}</td>
                       </tr>
                     </tbody>
+                    
+                  </table>
+
+                  <h5 class="card-title">Purchased Detail</h5>
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Product</th>
+                        <th scope="col">Supplier </th>
+                        <th scope="col">Available Stock</th>
+                        <th scope="col">Purchase Price</th>
+                        <th scope="col">Date</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {%for purchase in purchase_list%}
+                      <tr>
+                        <td>{{purchase.product.name}}</td>
+                        <td>{{purchase.supplier_name}}</td>
+                        <td>{{purchase.quantity}}</td>
+                        <td>{{purchase.purchase_price}}</td>
+                        <td>{{purchase.date}}</td>
+                      </tr>
+                      {%endfor%}
+                    </tbody>
+                    
+                  </table>
+
+                  <h5 class="card-title">Sold Detail</h5>
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Product</th>
+                        <th scope="col">Customer </th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Sold Price</th>
+                        <th scope="col">Date</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {%for sales in sales_list%}
+                      <tr>
+                        <td>{{sales.purchase.product.name}}</td>
+                        <td>{{sales.customer_name}}</td>
+                        <td>{{sales.quantity}}</td>
+                        <td>{{sales.sales_price}}</td>
+                        <td>{{sales.date}}</td>
+                      </tr>
+                      {%endfor%}
+                    </tbody>
+                    
                   </table>
                 </div>
               </div>

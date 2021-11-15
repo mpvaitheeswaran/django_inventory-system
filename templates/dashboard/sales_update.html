@@ -21,8 +21,8 @@
             <div class="card-body">
               <form action="" method="post">
                 {%csrf_token%}
-                {%crispy form%}
-                <!-- <input class="btn btn-success mt-2 float-end" type="submit" value="Add"> -->
+                {{form|crispy}}
+                <input class="btn btn-success mt-2 float-end" type="submit" value="Update">
               </form>
             </div>
           </div>
@@ -39,23 +39,19 @@
                       <tr>
                         <th scope="col">Product</th>
                         <th scope="col">Customer</th>
-                        <th scope="col">Quantity</th>
                         <th scope="col">Price</th>
                         <th scope="col">Total</th>
                         <th scope="col">Date</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {%for sales in sales_list%}
                       <tr>
                         <td>{{sales.purchase.product.name}}</td>
                         <td>{{sales.customer_name}}</td>
-                        <td>{{sales.quantity}} <a href="{%url 'dashboard-sales-update' sales.id%}" class="btn text-primary"><i class="bi bi-pencil"></i></a></td>
                         <td>{{sales.price_per}}</td>
                         <td>{{sales.total_price}}</td>
                         <td>{{sales.date|date:'M d Y '}}</td>
                       </tr>
-                      {%endfor%}
                     </tbody>
                   </table>
                 </div>

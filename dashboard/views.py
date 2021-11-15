@@ -1,8 +1,8 @@
 from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required,permission_required
-from .models import Product,Order
-from .forms import OrderForm, ProductForm
+from .models import Accounts, Product,Order, Purchase, Sales
+from .forms import AccountsForm, OrderForm, ProductForm, PurchaseForm, SalesForm, SalesUpdateForm
 from django.contrib import messages
 from .decorators import admin_only,salesman_only
 
@@ -114,12 +114,72 @@ def staff_view(request,pk):
 
 @permission_required('dashboard.add_sales',login_url='dashboard-index')
 def sales(request):
-    return render(request,'dashboard/sales.html')
+    if request.method=='POST':
+        form = SalesForm(request.POST)
+        if form.is_valid():
+            sales = form.save(commit=False)
+            sales_quantity  = sales.quantity
+            purchase_quantity = sales.purchase.quantity
+            purchase = sales.purchase
+            available_stock = purchase_quantity-sales_quantity
+            purchase.quantity = available_stock
+            if available_stock >= 0:
+                sales.save()
+                purchase.save()
+            else:
+                #form error
+                messages.error(request, "The Product Out of Stock")
+            return redirect('dashboard-sales')
+    else:
+        form = SalesForm()
+    context = {
+        'form':form,
+        'sales_list':Sales.objects.all()
+    }
+    return render(request,'dashboard/sales.html',context)
+
+def salesUpdate(request,pk):
+    sales = Sales.objects.get(id=pk)
+    if request.method == 'POST':
+        form = SalesUpdateForm(request.POST,instance=sales)
+        if form.is_valid():
+            pass
+    else:
+        form = SalesUpdateForm(instance=sales)
+    context = {
+        'form':form,
+        'sales':sales
+    }
+    return render(request,'dashboard/sales_update.html',context)
 
 @permission_required('dashboard.add_purchase',login_url='dashboard-index')
 def purchase(request):
-    return render(request,'dashboard/purchase.html')
+    if request.method=='POST':
+        form = PurchaseForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('dashboard-purchase')
+    else:
+        form = PurchaseForm()
+    context = {
+        'form':form,
+        'purchase_list':Purchase.objects.all(),
+    }
+    return render(request,'dashboard/purchase.html',context)
 
 @permission_required('dashboard.add_accounts',login_url='dashboard-index')
 def accounts(request):
-    return render(request,'dashboard/accounts.html')
+    total_purchased_price = 0 
+    total_sold_price = 0 
+    for purchase in Purchase.objects.all():
+        total_purchased_price+=purchase.purchase_price
+    for sales in Sales.objects.all():
+        total_sold_price+=sales.sales_price
+    context = {
+        'accounts_list':Accounts.objects.all(),
+        'purchase_list':Purchase.objects.all(),
+        'sales_list':Sales.objects.all(),
+        'total_purchased_price':total_purchased_price,
+        'total_sold_price':total_sold_price,
+    }
+    return render(request,'dashboard/accounts.html',context)

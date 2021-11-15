@@ -86,7 +86,7 @@ WSGI_APPLICATION = 'inventorysystem.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'inventroysystem',
+        'NAME': 'inventroyapp',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
         'HOST': 'localhost',

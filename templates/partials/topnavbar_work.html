@@ -3,31 +3,29 @@
 {%url 'dashboard-accounts' as dashboard_accounts%}
 <div class="container">
     <div class="row mt-4">
-        <div class="col-md-4">
-           
-        </div>
-        <div class="col-md-8">
+        
+        <div class="col-md-12">
             <div class="card">
                 <div class="card-header bg-success text-white">
                     Works
                 </div>
                 <div class="card-body">
                     <div class="row justify-content-center">
-                        {%if perms.dashboard.add_sales%}
-                        <div class="col-md-4">
-                            <a class="text-decoration-none text-dark" href="{%url 'dashboard-sales'%}">
-                                <div class="card my-card shadow text-center p-3 {%if request.path == dashboard_sales%}bg-secondary text-white{%endif%}">
-                                    <h4>Sales</h4>
-                                </div>
-                            </a>
-                        </div>
-                        {%endif%}
-
                         {%if perms.dashboard.add_purchase%}
                         <div class="col-md-4">
                             <a class="text-decoration-none text-dark" href="{%url 'dashboard-purchase'%}">
                                 <div class="card my-card  shadow text-center p-3 {%if request.path == dashboard_purchase%}bg-secondary text-white{%endif%}">
                                     <h4>Purchase</h4>
+                                </div>
+                            </a>
+                        </div>
+                        {%endif%}
+
+                        {%if perms.dashboard.add_sales%}
+                        <div class="col-md-4">
+                            <a class="text-decoration-none text-dark" href="{%url 'dashboard-sales'%}">
+                                <div class="card my-card shadow text-center p-3 {%if request.path == dashboard_sales%}bg-secondary text-white{%endif%}">
+                                    <h4>Sales</h4>
                                 </div>
                             </a>
                         </div>
