@@ -12,5 +12,6 @@ urlpatterns = [
     path('sales/', views.sales,name='dashboard-sales'),
     path('sales/update/<int:pk>/', views.salesUpdate,name='dashboard-sales-update'),
     path('purchase/', views.purchase,name='dashboard-purchase'),
+    path('purchase/update/<int:pk>/', views.purchaseUpdate,name='dashboard-purchase-update'),
     path('accounts/', views.accounts,name='dashboard-accounts'),
 ]

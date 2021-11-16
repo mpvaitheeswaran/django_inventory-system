@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required,permission_required
 from .models import Accounts, Product,Order, Purchase, Sales
-from .forms import AccountsForm, OrderForm, ProductForm, PurchaseForm, SalesForm, SalesUpdateForm
+from .forms import AccountsForm, OrderForm, ProductForm, PurchaseForm, PurchaseUpdateForm, SalesForm, SalesUpdateForm
 from django.contrib import messages
 from .decorators import admin_only,salesman_only
 
@@ -114,6 +114,8 @@ def staff_view(request,pk):
 
 @permission_required('dashboard.add_sales',login_url='dashboard-index')
 def sales(request):
+    search_value=''
+    sales = Sales.objects.all().order_by('-date')
     if request.method=='POST':
         form = SalesForm(request.POST)
         if form.is_valid():
@@ -130,20 +132,34 @@ def sales(request):
                 #form error
                 messages.error(request, "The Product Out of Stock")
             return redirect('dashboard-sales')
+    
     else:
         form = SalesForm()
+        
+        search = request.GET.get('search')
+        if search:
+            sales = Sales.objects.filter(purchase__product__name__icontains=search).order_by('-date')
+            search_value = search
+
     context = {
         'form':form,
-        'sales_list':Sales.objects.all()
+        'sales_list':sales,
+        'search_value':search_value
     }
     return render(request,'dashboard/sales.html',context)
 
+@permission_required('dashboard.add_sales',login_url='dashboard-index')
 def salesUpdate(request,pk):
     sales = Sales.objects.get(id=pk)
     if request.method == 'POST':
         form = SalesUpdateForm(request.POST,instance=sales)
         if form.is_valid():
-            pass
+            sales = form.save(commit=False)
+            # quantity = sales.quantity
+            # price = sales.price_per
+            # sales.total_price = quantity*price
+            sales.save()
+            return redirect('dashboard-sales')
     else:
         form = SalesUpdateForm(instance=sales)
     context = {
@@ -163,22 +179,42 @@ def purchase(request):
         form = PurchaseForm()
     context = {
         'form':form,
-        'purchase_list':Purchase.objects.all(),
+        'purchase_list':Purchase.objects.all().order_by('-date'),
     }
     return render(request,'dashboard/purchase.html',context)
+
+@permission_required('dashboard.add_purchase',login_url='dashboard-index')
+def purchaseUpdate(request,pk):
+    purchase = Purchase.objects.get(id=pk)
+    if request.method == 'POST':
+        form = PurchaseUpdateForm(request.POST,instance=purchase)
+        if form.is_valid():
+            purchase = form.save(commit=False)
+            # quantity = purchase.quantity
+            # price = purchase.price_per
+            # purchase.total_price = quantity*price
+            purchase.save()
+            return redirect('dashboard-purchase')
+    else:
+        form = PurchaseUpdateForm(instance=purchase)
+    context = {
+        'form':form,
+        'purchase':purchase
+    }
+    return render(request,'dashboard/purchase_update.html',context)
 
 @permission_required('dashboard.add_accounts',login_url='dashboard-index')
 def accounts(request):
     total_purchased_price = 0 
     total_sold_price = 0 
     for purchase in Purchase.objects.all():
-        total_purchased_price+=purchase.purchase_price
+        total_purchased_price+=purchase.total_price
     for sales in Sales.objects.all():
-        total_sold_price+=sales.sales_price
+        total_sold_price+=sales.total_price
     context = {
         'accounts_list':Accounts.objects.all(),
-        'purchase_list':Purchase.objects.all(),
-        'sales_list':Sales.objects.all(),
+        'purchase_list':Purchase.objects.all().order_by('-date'),
+        'sales_list':Sales.objects.all().order_by('-date'),
         'total_purchased_price':total_purchased_price,
         'total_sold_price':total_sold_price,
     }

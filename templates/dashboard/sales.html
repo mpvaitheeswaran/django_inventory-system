@@ -31,9 +31,15 @@
             <div class="card">
                 <div class="card-header bg-success text-light">
                   Sales Section
+
+                  
                 </div>
                 <div class="card-body">
-                  <h5 class="card-title">Sales List</h5>
+                  <h5 class="card-title float-start">Sales List</h5>
+                  <form action="" method="get" class="d-flex float-end">
+                    <input name="search" class="form-control me-2" type="search" placeholder="Search" aria-label="Search" value="{{search_value}}" autocomplete="off">
+                    <button class="btn btn-outline-success" type="submit"><i class="bi bi-search"></i></button>
+                  </form>
                   <table class="table">
                     <thead>
                       <tr>
@@ -50,9 +56,9 @@
                       <tr>
                         <td>{{sales.purchase.product.name}}</td>
                         <td>{{sales.customer_name}}</td>
-                        <td>{{sales.quantity}} <a href="{%url 'dashboard-sales-update' sales.id%}" class="btn text-primary"><i class="bi bi-pencil"></i></a></td>
-                        <td>{{sales.price_per}}</td>
-                        <td>{{sales.total_price}}</td>
+                        <td>{{sales.quantity|floatformat:'-2'}} <a title="Edit Quantity" href="{%url 'dashboard-sales-update' sales.id%}" class="btn text-success float-end p-0"><i class="bi bi-pencil"></i></a></td>
+                        <td>{{sales.price_per|floatformat:'2g'}}</td>
+                        <td>{{sales.total_price|floatformat:'2g'}}</td>
                         <td>{{sales.date|date:'M d Y '}}</td>
                       </tr>
                       {%endfor%}
@@ -77,10 +83,10 @@
     totalPrice.readOnly = true
     totalPrice.value=0
     quantity.addEventListener('input',function(){
-      totalPrice.value =parseInt(quantity.value) * parseInt(price.value)
+      totalPrice.value =Math.round(quantity.value * price.value)
     })
     price.addEventListener('input',function(){
-      totalPrice.value =parseInt(quantity.value) * parseInt(price.value)
+      totalPrice.value =Math.round(quantity.value * price.value)
     })
 
   </script>

@@ -77,7 +77,44 @@ class SalesForm(forms.ModelForm):
 class SalesUpdateForm(forms.ModelForm):
     class Meta:
         model = Sales
-        fields = ['quantity']
+        fields = ['quantity','price_per','total_price']
+    
+    def __init__(self, *args, **kwargs):
+        super(SalesUpdateForm, self).__init__(*args, **kwargs)
+        self.fields['price_per'].label = "Price per Quantity"
+
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+                Row(
+                    Column('quantity', css_class='col mb-0'),
+                    Column(HTML('<p>X</p>'), css_class='col-sm-1 mb-0'),
+                    Column('price_per', css_class=' col mb-0 '),
+                    css_class='row justify-content-between align-items-end'
+                ),
+                'total_price',
+                Submit('submit', 'Update',css_class='btn btn-success w-100 mt-2'),    
+        )
+
+class PurchaseUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Purchase
+        fields = ['quantity','price_per','total_price']
+    
+    def __init__(self, *args, **kwargs):
+        super(PurchaseUpdateForm, self).__init__(*args, **kwargs)
+        self.fields['price_per'].label = "Price per Quantity"
+
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+                Row(
+                    Column('quantity', css_class='col mb-0'),
+                    Column(HTML('<p>X</p>'), css_class='col-sm-1 mb-0'),
+                    Column('price_per', css_class=' col mb-0 '),
+                    css_class='row justify-content-between align-items-end'
+                ),
+                'total_price',
+                Submit('submit', 'Update',css_class='btn btn-success w-100 mt-2'),    
+        )
 
 class AccountsForm(forms.ModelForm):
     class Meta:

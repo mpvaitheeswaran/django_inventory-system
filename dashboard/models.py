@@ -29,22 +29,22 @@ class Order(models.Model):
 class Purchase(models.Model):
     product = models.ForeignKey(Product,on_delete=models.CASCADE,null=True)
     supplier_name = models.CharField(max_length=50,null=True)
-    price_per = models.PositiveIntegerField(null=True)
-    quantity = models.PositiveIntegerField(null=True)
-    total_price = models.IntegerField(null=True)
+    price_per = models.FloatField(null=True)
+    quantity = models.FloatField(null=True)
+    total_price = models.FloatField(null=True)
     date = models.DateTimeField(default=timezone.now())
     def __str__(self):
-        return f'{self.product.name} '
+        return f'{self.product.name} price {self.price_per} '
 
 class Sales(models.Model):
     purchase = models.ForeignKey(Purchase,on_delete=models.CASCADE,null=True)
     customer_name = models.CharField(max_length=50,null=True)
-    price_per = models.PositiveIntegerField(null = True)
-    quantity = models.PositiveIntegerField(null=True)
-    total_price = models.IntegerField(null=True)
+    price_per = models.FloatField(null = True)
+    quantity = models.FloatField(null=True)
+    total_price = models.FloatField(null=True)
     date = models.DateTimeField(default=timezone.now())
     def __str__(self) :
-        return f'{self.purchase} price {self.sales_price}'
+        return f'{self.purchase} price {self.price_per}'
 
 class Accounts(models.Model):
     sales = models.OneToOneField(Sales,on_delete=models.CASCADE,null=True)

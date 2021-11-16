@@ -21,8 +21,8 @@
             <div class="card-body">
               <form action="" method="post">
                 {%csrf_token%}
-                {{form|crispy}}
-                <input class="btn btn-success mt-2 float-end" type="submit" value="Update">
+                {%crispy form%}
+                <!-- <input class="btn btn-success mt-2 float-end" type="submit" value="Update"> -->
               </form>
             </div>
           </div>
@@ -66,18 +66,17 @@
 <!--End Table-->
 {%endblock%}
 {%block javascript%}
-  <script>
-    var totalPrice = document.getElementById('id_total_price');
-    var quantity = document.getElementById('id_quantity');
-    var price = document.getElementById('id_price_per')
-    totalPrice.readOnly = true
-    totalPrice.value=0
-    quantity.addEventListener('input',function(){
-      totalPrice.value =parseInt(quantity.value) * parseInt(price.value)
-    })
-    price.addEventListener('input',function(){
-      totalPrice.value =parseInt(quantity.value) * parseInt(price.value)
-    })
+<script>
+  var totalPrice = document.getElementById('id_total_price');
+  var quantity = document.getElementById('id_quantity');
+  var price = document.getElementById('id_price_per')
+  totalPrice.readOnly = true
+  quantity.addEventListener('input',function(){
+    totalPrice.value =Math.round(quantity.value * price.value)
+  })
+  price.addEventListener('input',function(){
+    totalPrice.value =Math.round(quantity.value * price.value)
+  })
 
-  </script>
+</script>
 {%endblock%}
