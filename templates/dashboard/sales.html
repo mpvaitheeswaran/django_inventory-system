@@ -2,7 +2,6 @@
 {% load crispy_forms_tags %}
 {%block title%}Sales{%endblock%}
 {%block content%}
-{%include 'partials/topnavbar_work.html'%}
  <!--Table-->
  <div class="container">
     <div class="row my-4">
@@ -63,6 +62,15 @@
                       </tr>
                       {%endfor%}
                     </tbody>
+                    <tfoot>
+                      <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>Total</td>
+                        <td>{{total_sold_price|floatformat:'2g'}}</td>
+                      </tr>
+                    </tfoot>
                   </table>
                 </div>
               </div>

@@ -2,10 +2,6 @@
 {%block title%}Dashboard | Home{%endblock%}
 {%block content %}
 {%if user.is_authenticated and user.is_staff%}
-{%if user.is_superuser%}
-{%include 'partials/topnavbar.html'%}
-{%endif%}
-{%include 'partials/topnavbar_work.html'%}
 
  <!--Graphs-->
  <div class="container">
@@ -18,10 +14,10 @@
                     var myChart1 = new Chart(ctx, {
                         type: 'pie',
                         data: {
-                            labels: [{%for order in orders%} '{{order.product.name}}', {%endfor%} ],
+                            labels: [{%for item in purchase%} '{{item.product.name}}', {%endfor%} ],
                             datasets: [{
-                                label: 'Orders',
-                                data: [{%for order in orders%} {{order.order_quantity}}, {%endfor%}],
+                                label: 'Purchase Detail',
+                                data: [{%for item in purchase%} {{item.total_price}}, {%endfor%}],
                                 backgroundColor: [
                                     'rgba(255, 99, 132, 1)',
                                     'rgba(54, 162, 235, 1)',

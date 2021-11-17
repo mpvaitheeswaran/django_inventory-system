@@ -26,6 +26,7 @@ def index(request):
         'orders_count':orders.count(),
         'staff_count':User.objects.all().count(),
         'products_count':products.count(),
+        'purchase':Purchase.objects.all()
     }
     return render(request,'dashboard/index.html',context)
 
@@ -115,6 +116,7 @@ def staff_view(request,pk):
 @permission_required('dashboard.add_sales',login_url='dashboard-index')
 def sales(request):
     search_value=''
+    total_sold_price = 0 
     sales = Sales.objects.all().order_by('-date')
     if request.method=='POST':
         form = SalesForm(request.POST)
@@ -140,10 +142,12 @@ def sales(request):
         if search:
             sales = Sales.objects.filter(purchase__product__name__icontains=search).order_by('-date')
             search_value = search
-
+    for sale in sales:
+        total_sold_price+=sale.total_price
     context = {
         'form':form,
         'sales_list':sales,
+        'total_sold_price':total_sold_price,
         'search_value':search_value
     }
     return render(request,'dashboard/sales.html',context)

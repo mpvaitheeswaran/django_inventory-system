@@ -1,5 +1,5 @@
 <!--Navbar-->
-<nav class="navbar navbar-expand-lg navbar-success bg-success">
+<!-- <nav class="navbar navbar-expand-lg navbar-success bg-success">
     <div class="container">
         <a class="navbar-brand text-white" href="{%url 'dashboard-index'%}">Inventory App</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -41,5 +41,47 @@
 
         </div>
     </div>
-</nav>
+</nav> -->
+{%url 'dashboard-index' as index%}
+{%url 'dashboard-staff' as staff%}
+{%url 'dashboard-order' as order%}
+{%url 'dashboard-product' as product%}
+{%url 'dashboard-sales' as sales%}
+{%url 'dashboard-purchase' as purchase%}
+{%url 'dashboard-accounts' as accounts%}
+
+<header class="header body-pd" id="header">
+    <div class="float-start d-flex align-items-center">
+      <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
+      <a class="navbar-brand text-dark ms-3" href="{%url 'dashboard-index'%}">Inventory App</a>
+    </div>
+    <div class="float-end d-flex align-items-center p-2">
+      {%if user.is_authenticated%}
+      <a class="d-flex align-items-center" href="{%url 'user-profile'%}"><div class="header_img "><img src="{{user.profile.profile_pic.url}}" alt=""> </div> <p class="ms-3 mb-0 p-0 text-dark">{{user.username}}</p></a>
+      {%if user.is_superuser%}
+      <a class="ms-3 text-success" href="{%url 'user-manage'%}"><i class="bi bi-gear"></i></a>
+      {%endif%}
+      {%else%}
+      <a class="ms-3" href="{%url 'user-login'%}">Login</a>
+      <a class="ms-3" href="{%url 'user-register'%}">Register</a>
+      {%endif%}
+    </div>
+</header>
+<div class="l-navbar show" id="nav-bar">
+      <nav class="nav">
+          <div> <a href="#" class="nav_logo"> <i class='bx bx-layer nav_logo-icon'></i> <span class="nav_logo-name">Inventry App</span> </a>
+              <div class="nav_list"> 
+                <a href="{%url 'dashboard-index'%}" class="nav_link {%if request.path == index%} active{%endif%}"> <i class='bx bx-grid-alt nav_icon'></i> <span class="nav_name">Dashboard</span> </a> 
+                {%if user.is_superuser%}
+                <a href="{%url 'dashboard-staff'%}" class="nav_link {%if request.path == staff%} active{%endif%}"> <i class='bx bx-user nav_icon'></i> <span class="nav_name">Staffs</span> </a> 
+                <a href="{%url 'dashboard-product'%}" class="nav_link {%if request.path == product%} active{%endif%}"> <i class='bx bxs-shopping-bag-alt'></i> <span class="nav_name">Products</span> </a> 
+                <a href="{%url 'dashboard-order'%}" class="nav_link {%if request.path == order%} active{%endif%}"> <i class='bx bx-cart'></i> <span class="nav_name">Orders</span> </a>
+                {%endif%}
+                <a href="{%url 'dashboard-purchase'%}" class="nav_link {%if request.path == purchase%} active{%endif%}"> <i class='bx bx-message-square-detail nav_icon'></i> <span class="nav_name">Purchase</span> </a> 
+                <a href="{%url 'dashboard-sales'%}" class="nav_link {%if request.path == sales%} active{%endif%}"> <i class='bx bx-bookmark nav_icon'></i> <span class="nav_name">Sales</span> </a> 
+                <a href="{%url 'dashboard-accounts'%}" class="nav_link {%if request.path == accounts%} active{%endif%}"> <i class='bx bx-folder nav_icon'></i> <span class="nav_name">Accounts</span> </a> 
+              </div>
+          </div> <a href="{%url 'user-logout'%}" class="nav_link" data-bs-toggle="tooltip" data-bs-placement="left" title="Sign Out"> <i class='bx bx-log-out nav_icon'></i> <span class="nav_name">SignOut</span> </a>
+      </nav>
+  </div>
 <!--End Navbar-->
