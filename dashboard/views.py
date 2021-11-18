@@ -2,9 +2,14 @@ from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required,permission_required
 from .models import Accounts, Product,Order, Purchase, Sales
-from .forms import AccountsForm, OrderForm, ProductForm, PurchaseForm, PurchaseUpdateForm, SalesForm, SalesUpdateForm
+from .forms import AccountsForm, OrderForm, ProductForm, PurchaseForm, PurchaseUpdateForm, SalesForm, SalesUpdateForm,BSModalSalesUpdateForm
 from django.contrib import messages
 from .decorators import admin_only,salesman_only
+from bootstrap_modal_forms.generic import BSModalUpdateView
+from django.views.generic import UpdateView
+from django.urls import reverse_lazy
+from django.http import JsonResponse
+from django.template.loader import render_to_string
 
 # Create your views here.
 @login_required()
@@ -223,3 +228,37 @@ def accounts(request):
         'total_sold_price':total_sold_price,
     }
     return render(request,'dashboard/accounts.html',context)
+
+#Sales Data
+def salesData(request):
+    data = dict()
+    if request.method == 'GET':
+        sales_list = Sales.objects.all().order_by('-date')
+        # asyncSettings.dataKey = 'table'
+        data['table'] = render_to_string(
+            'dashboard/_sales_table.html',
+            {'sales_list': sales_list},
+            request=request
+        )
+        return JsonResponse(data)
+    
+#Purchase Data
+def purchaseData(request):
+    data = dict()
+    if request.method == 'GET':
+        purchase_list = Purchase.objects.all().order_by('-date')
+        # asyncSettings.dataKey = 'table'
+        data['table'] = render_to_string(
+            'dashboard/_purchase_table.html',
+            {'purchase_list': purchase_list},
+            request=request
+        )
+        return JsonResponse(data)
+
+#Bootstrap Modal Form
+class SalesUpdateView(BSModalUpdateView):
+    model = Sales
+    template_name = 'dashboard/bsmodal_sales_update.html'
+    form_class = BSModalSalesUpdateForm
+    success_message = 'Price was updated.'
+    success_url = reverse_lazy('dashboard-sales')       

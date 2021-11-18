@@ -2,6 +2,14 @@
 {% load crispy_forms_tags %}
 {%block title%}Sales{%endblock%}
 {%block content%}
+<div class="modal fade" tabindex="-1" role="dialog" id="modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content"></div>
+  </div>
+</div>
+
+
+
  <!--Table-->
  <div class="container">
     <div class="row my-4">
@@ -39,39 +47,7 @@
                     <input name="search" class="form-control me-2" type="search" placeholder="Search" aria-label="Search" value="{{search_value}}" autocomplete="off">
                     <button class="btn btn-outline-success" type="submit"><i class="bi bi-search"></i></button>
                   </form>
-                  <table class="table">
-                    <thead>
-                      <tr>
-                        <th scope="col">Product</th>
-                        <th scope="col">Customer</th>
-                        <th scope="col">Quantity</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Total</th>
-                        <th scope="col">Date</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {%for sales in sales_list%}
-                      <tr>
-                        <td>{{sales.purchase.product.name}}</td>
-                        <td>{{sales.customer_name}}</td>
-                        <td>{{sales.quantity|floatformat:'-2'}} <a title="Edit Quantity" href="{%url 'dashboard-sales-update' sales.id%}" class="btn text-success float-end p-0"><i class="bi bi-pencil"></i></a></td>
-                        <td>{{sales.price_per|floatformat:'2g'}}</td>
-                        <td>{{sales.total_price|floatformat:'2g'}}</td>
-                        <td>{{sales.date|date:'M d Y '}}</td>
-                      </tr>
-                      {%endfor%}
-                    </tbody>
-                    <tfoot>
-                      <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td>Total</td>
-                        <td>{{total_sold_price|floatformat:'2g'}}</td>
-                      </tr>
-                    </tfoot>
-                  </table>
+                  {%include 'dashboard/_sales_table.html'%}
                 </div>
               </div>
         </div>
@@ -81,6 +57,46 @@
 
 
 
+<script type="text/javascript">
+  $(document).ready(function() {
+  
+  
+  });
+  $(function () {
+    
+    var asyncSuccessMessage = [
+    "<div ",
+    "style='position:fixed;top:0;z-index:10000;width:100%;border-radius:0;' ",
+    "class='alert alert-icon alert-success alert-dismissible fade show mb-0' role='alert'>",
+    "Success: Book was updated.",
+    "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>",
+    "<span aria-hidden='true'>&times;</span>",
+    "</button>",
+    "</div>",
+    "<script>",
+    "$('.alert').fadeTo(2000, 500).slideUp(500, function () {$('.alert').slideUp(500).remove();});",
+    "<\/script>"
+  ].join();
+function updateSalesModalForm() {
+  $(".update-sales").each(function () {
+    $(this).modalForm({
+      formURL: $(this).data("form-url"),
+      asyncUpdate: true,
+          asyncSettings: {
+            closeOnSubmit: true,
+            successMessage: asyncSuccessMessage,
+            dataUrl: "/salesdata/",
+            dataElementId: "#sales-table",
+            dataKey: "table",
+            addModalFormFunction: updateSalesModalForm
+          }
+    });
+    
+  });
+}
+updateSalesModalForm();
+  })
+</script>
 <!--End Table-->
 {%endblock%}
 {%block javascript%}

@@ -1,0 +1,36 @@
+<table id="sales-table" class="table">
+    <thead>
+      <tr>
+        <th scope="col">Product</th>
+        <th scope="col">Customer</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Price</th>
+        <th scope="col">Total</th>
+        <th scope="col">Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%for sales in sales_list%}
+      <tr>
+        <td>{{sales.purchase.product.name}}</td>
+        <td>{{sales.customer_name}}</td>
+        <td>{{sales.quantity|floatformat:'-2'}} 
+            <!-- <a title="Edit Quantity" href="{%url 'dashboard-sales-update' sales.id%}" class="btn text-success float-end p-0"><i class="bi bi-pencil"></i></a> -->
+            <button id="" class="btn text-success float-end p-0 update-sales" type="button" name="button" data-form-url="{% url 'dashboard-sales-update' sales.id %}"><i class="bi bi-pencil"></i></button>
+        </td>
+        <td>{{sales.price_per|floatformat:'2g'}}</td>
+        <td>{{sales.total_price|floatformat:'2g'}}</td>
+        <td>{{sales.date|date:'M d Y '}}</td>
+      </tr>
+      {%endfor%}
+    </tbody>
+    <tfoot>
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>Total</td>
+        <td>{{total_sold_price|floatformat:'2g'}}</td>
+      </tr>
+    </tfoot>
+  </table>

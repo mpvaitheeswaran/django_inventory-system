@@ -26,30 +26,7 @@
                 </div>
                 <div class="card-body " style="overflow-x: auto;">
                   <h5 class="card-title">Purchase List</h5>
-                  <table class="table">
-                    <thead>
-                      <tr>
-                        <th scope="col">Product</th>
-                        <th scope="col">Supplier</th>
-                        <th scope="col">Quantity</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Total</th>
-                        <th scope="col">Date</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {%for purchase in purchase_list%}
-                      <tr>
-                        <td>{{purchase.product.name}}</td>
-                        <td>{{purchase.supplier_name}}</td>
-                        <td>{{purchase.quantity|floatformat}} <a title="Edit Quantity" href="{%url 'dashboard-purchase-update' purchase.id%}" class="btn text-success p-0 float-end"><i class="bi bi-pencil"></i></a></td>
-                        <td>{{purchase.price_per|floatformat:'2g'}}</td>
-                        <td>{{purchase.total_price|floatformat:'2g'}}</td>
-                        <td>{{purchase.date|date:'M d Y '}}</td>
-                      </tr>
-                      {%endfor%}
-                    </tbody>
-                  </table>
+                  {%include 'dashboard/_purchase_table.html'%}
                 </div>
               </div>
 

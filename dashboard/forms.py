@@ -2,7 +2,8 @@ from django.forms import fields
 from .models import Accounts, Order, Product, Purchase, Sales
 from django import forms
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, Row, Column,HTML
+from crispy_forms.layout import Layout, Submit, Row, Column
+from bootstrap_modal_forms.forms import BSModalModelForm
 
 class DateInput(forms.DateInput):
     input_type = 'date'
@@ -92,6 +93,25 @@ class SalesUpdateForm(forms.ModelForm):
                 Submit('submit', 'Update',css_class='btn btn-success w-100 mt-2'),    
         )
 
+class BSModalSalesUpdateForm(BSModalModelForm):
+    class Meta:
+        model = Sales
+        fields = ['quantity','price_per','total_price']
+    
+    def __init__(self, *args, **kwargs):
+        super(BSModalSalesUpdateForm, self).__init__(*args, **kwargs)
+        self.fields['price_per'].label = "Price"
+
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+                Row(
+                    Column('quantity', css_class='col-md-3 col-sm-1 mb-0'),
+                    Column('price_per', css_class=' col-md-3 col-sm-1 mb-0 '),
+                    css_class='row justify-content-between align-items-end'
+                ),
+                'total_price',
+                Submit('submit', 'Update',css_class='btn btn-success w-100 mt-2'),    
+        )
 class PurchaseUpdateForm(forms.ModelForm):
     class Meta:
         model = Purchase

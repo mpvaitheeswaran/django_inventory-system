@@ -1,0 +1,32 @@
+{%load crispy_forms_tags%}
+<form method="post" action="">
+  {% csrf_token %}
+
+ <div class="modal-header">
+    <h5 class="modal-title">Change Quantity & Price</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+  </div>
+
+  <div class="modal-body">
+    {%crispy form%}
+  </div>
+
+  <!-- <div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    <button type="submit" class="btn btn-primary">Create</button>
+  </div> -->
+
+</form>
+<script>
+    var totalPrice = document.getElementById('id_total_price');
+    var quantity = document.getElementById('id_quantity');
+    var price = document.getElementById('id_price_per')
+    totalPrice.readOnly = true
+    quantity.addEventListener('input',function(){
+      totalPrice.value =Math.round(quantity.value * price.value)
+    })
+    price.addEventListener('input',function(){
+      totalPrice.value =Math.round(quantity.value * price.value)
+    })
+
+  </script>
