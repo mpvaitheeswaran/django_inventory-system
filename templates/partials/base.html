@@ -17,6 +17,22 @@
     <link rel="stylesheet" href="{%static 'css/style.css'%}">
     <!-- Sidebar Style -->
     <link rel="stylesheet" href="{%static 'css/sidebar.css'%}">
+
+    <!-- Custom Style -->
+    <link rel="stylesheet" href="{%static 'css/style.css'%}">
+
+    {%if not user.is_authenticated%}    
+    <style>
+      .body-pd{
+        margin: 0;
+        padding: 0;
+      }
+      body{
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+    {%endif%}
     <!-- Jquery -->
     <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 

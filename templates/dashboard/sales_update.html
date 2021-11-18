@@ -2,7 +2,6 @@
 {% load crispy_forms_tags %}
 {%block title%}Sales{%endblock%}
 {%block content%}
-{%include 'partials/topnavbar_work.html'%}
  <!--Table-->
  <div class="container">
     <div class="row my-4">
@@ -32,7 +31,7 @@
                 <div class="card-header bg-success text-light">
                   Sales Section
                 </div>
-                <div class="card-body">
+                <div class="card-body" style="overflow-x: auto;">
                   <h5 class="card-title">Sales List</h5>
                   <table class="table">
                     <thead>

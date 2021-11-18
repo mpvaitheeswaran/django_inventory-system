@@ -27,7 +27,7 @@ class PurchaseForm(forms.ModelForm):
     
     def __init__(self, *args, **kwargs):
         super(PurchaseForm, self).__init__(*args, **kwargs)
-        self.fields['price_per'].label = "Price per Quantity"
+        self.fields['price_per'].label = "Price"
 
         self.helper = FormHelper()
         self.helper.layout = Layout(
@@ -36,7 +36,6 @@ class PurchaseForm(forms.ModelForm):
                 'supplier_name',
                 Row(
                     Column('quantity', css_class='col mb-0'),
-                    Column(HTML('<p>X</p>'), css_class='col-sm-1 mb-0'),
                     Column('price_per', css_class=' col mb-0 '),
                     css_class='row justify-content-between align-items-end'
                 ),
@@ -57,7 +56,7 @@ class SalesForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(SalesForm, self).__init__(*args, **kwargs)
         self.fields['purchase'].label = "Product"
-        self.fields['price_per'].label = "Price per Quantity"
+        self.fields['price_per'].label = "Price"
 
         self.helper = FormHelper()
         self.helper.layout = Layout(
@@ -66,7 +65,6 @@ class SalesForm(forms.ModelForm):
                 'customer_name',
                 Row(
                     Column('quantity', css_class='col mb-0'),
-                    Column(HTML('<p>X</p>'), css_class='col-sm-1 mb-0'),
                     Column('price_per', css_class=' col mb-0 '),
                     css_class='row justify-content-between align-items-end'
                 ),
@@ -81,14 +79,13 @@ class SalesUpdateForm(forms.ModelForm):
     
     def __init__(self, *args, **kwargs):
         super(SalesUpdateForm, self).__init__(*args, **kwargs)
-        self.fields['price_per'].label = "Price per Quantity"
+        self.fields['price_per'].label = "Price"
 
         self.helper = FormHelper()
         self.helper.layout = Layout(
                 Row(
-                    Column('quantity', css_class='col mb-0'),
-                    Column(HTML('<p>X</p>'), css_class='col-sm-1 mb-0'),
-                    Column('price_per', css_class=' col mb-0 '),
+                    Column('quantity', css_class='col-md-3 col-sm-1 mb-0'),
+                    Column('price_per', css_class=' col-md-3 col-sm-1 mb-0 '),
                     css_class='row justify-content-between align-items-end'
                 ),
                 'total_price',
@@ -102,14 +99,13 @@ class PurchaseUpdateForm(forms.ModelForm):
     
     def __init__(self, *args, **kwargs):
         super(PurchaseUpdateForm, self).__init__(*args, **kwargs)
-        self.fields['price_per'].label = "Price per Quantity"
+        self.fields['price_per'].label = "Price"
 
         self.helper = FormHelper()
         self.helper.layout = Layout(
                 Row(
-                    Column('quantity', css_class='col mb-0'),
-                    Column(HTML('<p>X</p>'), css_class='col-sm-1 mb-0'),
-                    Column('price_per', css_class=' col mb-0 '),
+                    Column('quantity', css_class='col-md col-sm mb-0'),
+                    Column('price_per', css_class='col-md col-sm mb-0 '),
                     css_class='row justify-content-between align-items-end'
                 ),
                 'total_price',

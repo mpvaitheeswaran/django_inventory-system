@@ -52,7 +52,7 @@
 
 <header class="header body-pd" id="header">
     <div class="float-start d-flex align-items-center">
-      <div class="header_toggle"> <i class='bx bx-menu' id="header-toggle"></i> </div>
+      <div class="header_toggle"> <i class='bx bx-menu bx-x' id="header-toggle"></i> </div>
       <a class="navbar-brand text-dark ms-3" href="{%url 'dashboard-index'%}">Inventory App</a>
     </div>
     <div class="float-end d-flex align-items-center p-2">
@@ -71,15 +71,15 @@
       <nav class="nav">
           <div> <a href="#" class="nav_logo"> <i class='bx bx-layer nav_logo-icon'></i> <span class="nav_logo-name">Inventry App</span> </a>
               <div class="nav_list"> 
-                <a href="{%url 'dashboard-index'%}" class="nav_link {%if request.path == index%} active{%endif%}"> <i class='bx bx-grid-alt nav_icon'></i> <span class="nav_name">Dashboard</span> </a> 
+                <a title="Dashboard" href="{%url 'dashboard-index'%}" class="nav_link {%if request.path == index%} active{%endif%}"> <i class='bx bx-grid-alt nav_icon'></i> <span class="nav_name">Dashboard</span> </a> 
                 {%if user.is_superuser%}
-                <a href="{%url 'dashboard-staff'%}" class="nav_link {%if request.path == staff%} active{%endif%}"> <i class='bx bx-user nav_icon'></i> <span class="nav_name">Staffs</span> </a> 
-                <a href="{%url 'dashboard-product'%}" class="nav_link {%if request.path == product%} active{%endif%}"> <i class='bx bxs-shopping-bag-alt'></i> <span class="nav_name">Products</span> </a> 
-                <a href="{%url 'dashboard-order'%}" class="nav_link {%if request.path == order%} active{%endif%}"> <i class='bx bx-cart'></i> <span class="nav_name">Orders</span> </a>
+                <a title="Staffs" href="{%url 'dashboard-staff'%}" class="nav_link {%if request.path == staff%} active{%endif%}"> <i class='bx bx-user nav_icon'></i> <span class="nav_name">Staffs</span> </a> 
+                <a title="Products" href="{%url 'dashboard-product'%}" class="nav_link {%if request.path == product%} active{%endif%}"> <i class='bx bxs-shopping-bag-alt'></i> <span class="nav_name">Products</span> </a> 
+                <a title="Orders" href="{%url 'dashboard-order'%}" class="nav_link {%if request.path == order%} active{%endif%}"> <i class='bx bx-cart'></i> <span class="nav_name">Orders</span> </a>
                 {%endif%}
-                <a href="{%url 'dashboard-purchase'%}" class="nav_link {%if request.path == purchase%} active{%endif%}"> <i class='bx bx-message-square-detail nav_icon'></i> <span class="nav_name">Purchase</span> </a> 
-                <a href="{%url 'dashboard-sales'%}" class="nav_link {%if request.path == sales%} active{%endif%}"> <i class='bx bx-bookmark nav_icon'></i> <span class="nav_name">Sales</span> </a> 
-                <a href="{%url 'dashboard-accounts'%}" class="nav_link {%if request.path == accounts%} active{%endif%}"> <i class='bx bx-folder nav_icon'></i> <span class="nav_name">Accounts</span> </a> 
+                <a title="Purchase" href="{%url 'dashboard-purchase'%}" class="nav_link {%if request.path == purchase%} active{%endif%}"> <i class='bx bx-message-square-detail nav_icon'></i> <span class="nav_name">Purchase</span> </a> 
+                <a title="Sales" href="{%url 'dashboard-sales'%}" class="nav_link {%if request.path == sales%} active{%endif%}"> <i class='bx bx-bookmark nav_icon'></i> <span class="nav_name">Sales</span> </a> 
+                <a title="Accounts" href="{%url 'dashboard-accounts'%}" class="nav_link {%if request.path == accounts%} active{%endif%}"> <i class='bx bx-folder nav_icon'></i> <span class="nav_name">Accounts</span> </a> 
               </div>
           </div> <a href="{%url 'user-logout'%}" class="nav_link" data-bs-toggle="tooltip" data-bs-placement="left" title="Sign Out"> <i class='bx bx-log-out nav_icon'></i> <span class="nav_name">SignOut</span> </a>
       </nav>
