@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Accounts, Product,Order, Purchase, Sales
+from .models import Accounts, Customer, Product,Order, Purchase, Sales
 # Register your models here.
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('id','name','category','quantity')
@@ -10,3 +10,4 @@ admin.site.register(Order)
 admin.site.register(Purchase)
 admin.site.register(Sales)
 admin.site.register(Accounts)
+admin.site.register(Customer)

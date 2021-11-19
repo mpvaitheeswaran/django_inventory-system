@@ -46,10 +46,9 @@ class PurchaseForm(forms.ModelForm):
         )
 
 class SalesForm(forms.ModelForm):
-    
     class Meta:
         model = Sales
-        fields = ['date','purchase','customer_name','quantity','price_per','total_price']
+        fields = ['date','purchase','quantity','price_per','total_price']
         widgets = {
             'date': DateInput()
         }
@@ -63,7 +62,6 @@ class SalesForm(forms.ModelForm):
         self.helper.layout = Layout(
                 'date',
                 'purchase',
-                'customer_name',
                 Row(
                     Column('quantity', css_class='col mb-0'),
                     Column('price_per', css_class=' col mb-0 '),

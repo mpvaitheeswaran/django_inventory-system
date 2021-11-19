@@ -13,7 +13,7 @@
       {%for sales in sales_list%}
       <tr>
         <td>{{sales.purchase.product.name}}</td>
-        <td>{{sales.customer_name}}</td>
+        <td>{{sales.customer}}</td>
         <td>{{sales.quantity|floatformat:'-2'}} 
             <!-- <a title="Edit Quantity" href="{%url 'dashboard-sales-update' sales.id%}" class="btn text-success float-end p-0"><i class="bi bi-pencil"></i></a> -->
             <button id="" class="btn text-success float-end p-0 update-sales" type="button" name="button" data-form-url="{% url 'dashboard-sales-update' sales.id %}"><i class="bi bi-pencil"></i></button>

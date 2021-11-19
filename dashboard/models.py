@@ -38,13 +38,18 @@ class Purchase(models.Model):
 
 class Sales(models.Model):
     purchase = models.ForeignKey(Purchase,on_delete=models.CASCADE,null=True)
-    customer_name = models.CharField(max_length=50,null=True)
     price_per = models.FloatField(null = True)
     quantity = models.FloatField(null=True)
     total_price = models.FloatField(null=True)
     date = models.DateTimeField(default=timezone.now())
     def __str__(self) :
         return f'{self.purchase} price {self.price_per}'
+
+class Customer(models.Model):
+    name = models.CharField(max_length=50,null=True)
+    sale = models.ManyToManyField(Sales,null=True)
+    def __str__(self) :
+        return f'{self.name}'
 
 class Accounts(models.Model):
     sales = models.OneToOneField(Sales,on_delete=models.CASCADE,null=True)

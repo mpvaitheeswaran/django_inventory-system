@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required,permission_required
-from .models import Accounts, Product,Order, Purchase, Sales
+from .models import Accounts, Customer, Product,Order, Purchase, Sales
 from .forms import AccountsForm, BSModalPurchaseUpdateForm, OrderForm, ProductForm, PurchaseForm, PurchaseUpdateForm, SalesForm, SalesUpdateForm,BSModalSalesUpdateForm
 from django.contrib import messages
 from .decorators import admin_only,salesman_only
@@ -10,6 +10,7 @@ from django.views.generic import UpdateView
 from django.urls import reverse_lazy
 from django.http import JsonResponse
 from django.template.loader import render_to_string
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
 
 # Create your views here.
 @login_required()
@@ -125,6 +126,7 @@ def sales(request):
     sales = Sales.objects.all().order_by('-date')
     if request.method=='POST':
         form = SalesForm(request.POST)
+        customer_name = request.POST.get('customer_name')
         if form.is_valid():
             sales = form.save(commit=False)
             sales_quantity  = sales.quantity
@@ -135,6 +137,18 @@ def sales(request):
             if available_stock >= 0:
                 sales.save()
                 purchase.save()
+                #Save the customer
+                
+                try:
+                    customer = Customer.objects.get(name=customer_name)
+                    if customer.exsist():
+                        customer.sale.add(sales)
+                    else:
+                        customer = Customer(name=customer_name)
+                        customer.save()
+                        customer.sale.add(sales)
+                except(ValueError,ObjectDoesNotExist):
+                    pass
             else:
                 #form error
                 messages.error(request, "The Product Out of Stock")
