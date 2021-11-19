@@ -2,7 +2,13 @@
 {% load crispy_forms_tags %}
 {%block title%}Purchase{%endblock%}
 {%block content%}
- <!--Table-->
+
+<!-- Modal for update form -->
+<div class="modal fade" tabindex="-1" role="dialog" id="modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content"></div>
+  </div>
+</div>
  <div class="container">
     <div class="row my-4">
         <div class="col-md-4">
@@ -35,9 +41,40 @@
 
 </div>
 
+<script type="text/javascript">
+  $(function () {
+    
+    var asyncSuccessMessage = [
+      `
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Price</strong> was updated.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      
+      `,
+  ].join(); 
+  function updatePurchaseModalForm() {
+    $(".update-purchase").each(function () {
+      $(this).modalForm({
+        formURL: $(this).data("form-url"),
+        asyncUpdate: true,
+            asyncSettings: {
+              closeOnSubmit: true,
+              successMessage: asyncSuccessMessage,
+              dataUrl: "/purchasedata/",
+              dataElementId: "#purchase-table",
+              dataKey: "table",
+              addModalFormFunction: updatePurchaseModalForm
+            }
+      });
+      
+    });
+  }
+  updatePurchaseModalForm();
+})
 
+</script>
 
-<!--End Table-->
 {%endblock%}
 
 {%block javascript%}

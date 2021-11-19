@@ -14,6 +14,8 @@ urlpatterns = [
     path('sales/update/<int:pk>/', views.SalesUpdateView.as_view(),name='dashboard-sales-update'),
     path('salesdata/',views.salesData,name='sales-data'),
     path('purchase/', views.purchase,name='dashboard-purchase'),
-    path('purchase/update/<int:pk>/', views.purchaseUpdate,name='dashboard-purchase-update'),
+    #path('purchase/update/<int:pk>/', views.purchaseUpdate,name='dashboard-purchase-update'),
+    path('purchase/update/<int:pk>/', views.PurchaseUpdateView.as_view(),name='dashboard-purchase-update'),
+    path('purchasedata/',views.purchaseData,name='purchase-data'),
     path('accounts/', views.accounts,name='dashboard-accounts'),
 ]

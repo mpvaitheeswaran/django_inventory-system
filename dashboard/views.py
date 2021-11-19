@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required,permission_required
 from .models import Accounts, Product,Order, Purchase, Sales
-from .forms import AccountsForm, OrderForm, ProductForm, PurchaseForm, PurchaseUpdateForm, SalesForm, SalesUpdateForm,BSModalSalesUpdateForm
+from .forms import AccountsForm, BSModalPurchaseUpdateForm, OrderForm, ProductForm, PurchaseForm, PurchaseUpdateForm, SalesForm, SalesUpdateForm,BSModalSalesUpdateForm
 from django.contrib import messages
 from .decorators import admin_only,salesman_only
 from bootstrap_modal_forms.generic import BSModalUpdateView
@@ -261,4 +261,11 @@ class SalesUpdateView(BSModalUpdateView):
     template_name = 'dashboard/bsmodal_sales_update.html'
     form_class = BSModalSalesUpdateForm
     success_message = 'Price was updated.'
-    success_url = reverse_lazy('dashboard-sales')       
+    success_url = reverse_lazy('dashboard-sales') 
+
+class PurchaseUpdateView(BSModalUpdateView):
+    model = Purchase
+    template_name = 'dashboard/bsmodal_purchase_update.html'
+    form_class = BSModalPurchaseUpdateForm
+    success_message = 'Price was updated.'
+    success_url = reverse_lazy('dashboard-purchase')      

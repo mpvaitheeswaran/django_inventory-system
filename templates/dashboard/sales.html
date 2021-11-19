@@ -2,6 +2,8 @@
 {% load crispy_forms_tags %}
 {%block title%}Sales{%endblock%}
 {%block content%}
+
+<!-- Modal for update form -->
 <div class="modal fade" tabindex="-1" role="dialog" id="modal">
   <div class="modal-dialog" role="document">
     <div class="modal-content"></div>
@@ -58,25 +60,17 @@
 
 
 <script type="text/javascript">
-  $(document).ready(function() {
-  
-  
-  });
   $(function () {
     
     var asyncSuccessMessage = [
-    "<div ",
-    "style='position:fixed;top:0;z-index:10000;width:100%;border-radius:0;' ",
-    "class='alert alert-icon alert-success alert-dismissible fade show mb-0' role='alert'>",
-    "Success: Book was updated.",
-    "<button type='button' class='close' data-dismiss='alert' aria-label='Close'>",
-    "<span aria-hidden='true'>&times;</span>",
-    "</button>",
-    "</div>",
-    "<script>",
-    "$('.alert').fadeTo(2000, 500).slideUp(500, function () {$('.alert').slideUp(500).remove();});",
-    "<\/script>"
-  ].join();
+      `
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Price</strong> was updated.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      
+      `,
+  ].join(); 
 function updateSalesModalForm() {
   $(".update-sales").each(function () {
     $(this).modalForm({
