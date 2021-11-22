@@ -33,7 +33,7 @@
 
                 <div class="mb-1">
                   <label for="customer" class="form-label">Customer Name</label>
-                  <input name="customer_name" type="text" class="form-control" id="customer">
+                  <input name="customer_name" type="text" class="form-control basicAutoComplete" id="customer" autocomplete="on" >
                 </div>
                 {%crispy form%}
                 <!-- <input class="btn btn-success mt-2 float-end" type="submit" value="Add"> -->
@@ -55,6 +55,25 @@
                     <button class="btn btn-outline-success" type="submit"><i class="bi bi-search"></i></button>
                   </form>
                   {%include 'dashboard/_sales_table.html'%}
+
+                  <table id="customer-table" class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Customer Name</th>
+                        <th scope="col">Total Products</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {%for customer in customers%}
+                      <tr>
+                        <td>{{customer.name}}<button type="button" class="read-customer bs-modal btn btn-sm float-end text-success" data-form-url="{% url 'read_customer' customer.id %}">
+                          <i class="bi bi-eye-fill"></i>
+                        </button></td>
+                        <td>{{customer.sale.all.count}}</td>
+                      </tr>
+                      {%endfor%}
+                    </tbody>
+                  </table>
                 </div>
               </div>
         </div>
@@ -66,6 +85,11 @@
 
 <script type="text/javascript">
   $(function () {
+
+    // Read book buttons
+    $(".read-customer").each(function () {
+      $(this).modalForm({formURL: $(this).data("form-url")});
+    });
     
     var asyncSuccessMessage = [
       `
@@ -113,4 +137,22 @@ updateSalesModalForm();
     })
 
   </script>
+  <script src="https://cdn.jsdelivr.net/gh/xcash/bootstrap-autocomplete@v2.3.7/dist/latest/bootstrap-autocomplete.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" integrity="sha512-uto9mlQzrs59VwILcLiRYeLKPPbS/bT71da/OEBYEwcdNUk8jYIy+D176RYoop1Da+f9mvkYrmj5MCLZWEtQuA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script>
+    /*$('.basicAutoComplete').autoComplete(
+        {minLength: 1}
+    );*/
+    $( function() {
+      var availableTags = [
+          {% for customer in customers %}
+              "{{customer.name}}",
+          {% endfor %}
+      ];
+      console.log(availableTags)
+      $( "#customer" ).autocomplete({
+        source: availableTags
+      });
+    } );
+</script>
 {%endblock%}

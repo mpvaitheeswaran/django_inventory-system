@@ -20,6 +20,7 @@
                         <th scope="col">Total sold </th>
                         <th scope="col">Total purchaced price</th>
                         <th scope="col">Total sold price</th>
+                        <th scope="col">Total Customers</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -28,6 +29,7 @@
                         <td>{{sales_list.count}}</td>
                         <td>{{total_purchased_price}}</td>
                         <td>{{total_sold_price}}</td>
+                        <td>{{total_customers}}</td>
                       </tr>
                     </tbody>
                     
@@ -82,7 +84,7 @@
                       {%for sales in sales_list%}
                       <tr>
                         <td>{{sales.purchase.product.name}}</td>
-                        <td>{{sales.customer_name}}</td>
+                        <td>{{sales.customer_set.all.0}}</td>
                         <td>{{sales.quantity}}</td>
                         <td>{{sales.price_per}}</td>
                         <td>{{sales.total_price}}</td>

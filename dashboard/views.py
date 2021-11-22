@@ -5,13 +5,12 @@ from .models import Accounts, Customer, Product,Order, Purchase, Sales
 from .forms import AccountsForm, BSModalPurchaseUpdateForm, OrderForm, ProductForm, PurchaseForm, PurchaseUpdateForm, SalesForm, SalesUpdateForm,BSModalSalesUpdateForm
 from django.contrib import messages
 from .decorators import admin_only,salesman_only
-from bootstrap_modal_forms.generic import BSModalUpdateView
+from bootstrap_modal_forms.generic import BSModalReadView, BSModalUpdateView
 from django.views.generic import UpdateView
 from django.urls import reverse_lazy
 from django.http import JsonResponse
 from django.template.loader import render_to_string
-from django.core.exceptions import ObjectDoesNotExist, ValidationError
-
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 # Create your views here.
 @login_required()
 def index(request):
@@ -137,24 +136,24 @@ def sales(request):
             if available_stock >= 0:
                 sales.save()
                 purchase.save()
-                #Save the customer
+                #If Custemer name is exsist save the sales detail in customer
+                #If customer name is not exsits create a new customer and save the sales detail in newly created customer
                 
                 try:
                     customer = Customer.objects.get(name=customer_name)
-                    if customer.exsist():
-                        customer.sale.add(sales)
-                    else:
-                        customer = Customer(name=customer_name)
-                        customer.save()
-                        customer.sale.add(sales)
-                except(ValueError,ObjectDoesNotExist):
-                    pass
+                    customer.sale.add(sales)
+                except Customer.DoesNotExist:
+                    customer = Customer(name=customer_name)
+                    customer.save()
+                    customer.sale.add(sales)
             else:
                 #form error
                 messages.error(request, "The Product Out of Stock")
             return redirect('dashboard-sales')
     
     else:
+        for sale in sales:
+            print(sale.customer_set.all())
         form = SalesForm()
         
         search = request.GET.get('search')
@@ -167,9 +166,22 @@ def sales(request):
         'form':form,
         'sales_list':sales,
         'total_sold_price':total_sold_price,
-        'search_value':search_value
+        'search_value':search_value,
+        'customers':Customer.objects.all()
     }
     return render(request,'dashboard/sales.html',context)
+
+def customer_autocomplete(request):
+    # data = Customer.objects.all().values_list('name',flat=True)
+    # json = list(data)
+    # return JsonResponse(json, safe=False)
+    if request.GET.get('customer_name'):
+        customer_name = request.GET['customer_name']
+        data = Customer.objects.filter(name__startswith=customer_name).values_list('name',flat=True)
+        json = list(data)
+        return JsonResponse(json, safe=False)
+    else:
+        return HttpResponse("No cookies")
 
 @permission_required('dashboard.add_sales',login_url='dashboard-index')
 def salesUpdate(request,pk):
@@ -240,6 +252,7 @@ def accounts(request):
         'sales_list':Sales.objects.all().order_by('-date'),
         'total_purchased_price':total_purchased_price,
         'total_sold_price':total_sold_price,
+        'total_customers':Customer.objects.all().count(),
     }
     return render(request,'dashboard/accounts.html',context)
 
@@ -283,3 +296,7 @@ class PurchaseUpdateView(BSModalUpdateView):
     form_class = BSModalPurchaseUpdateForm
     success_message = 'Price was updated.'
     success_url = reverse_lazy('dashboard-purchase')      
+
+class CustomerReadView(BSModalReadView):
+    model = Customer
+    template_name = 'dashboard/read_customer.html'

@@ -1,0 +1,14 @@
+<div class="modal-header">
+    <h5 class="modal-title">Customer Detail</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+  </div>
+  <div class="modal-body">
+    <h6>Total Products : {{object.sale.all.count}}</h6>
+    <h6>Products</h6>
+    {%for sales in object.sale.all%}
+    <p>{{sales.purchase.product.name}} Price {{sales.total_price}}</p>
+    {%endfor%}
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+  </div>
